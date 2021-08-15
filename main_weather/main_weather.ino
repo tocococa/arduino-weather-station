@@ -9,17 +9,17 @@
 volatile unsigned long ContactBounceTime;
 
 // WIND
-// wind speed
+// wind speed (cup anemometer)
 const int WindSensorPin = 3;
 volatile unsigned int Rotations = 0;
 float WindSpeed;
-// wind direction
+// wind direction (vane)
 const int VanePin = A0;
 int WindVane = 0;
 int VaneOutput;
 int WindDirection;
 
-// RAIN
+// RAIN (tipping bucket gauge)
 const int RainGaugePin = 2;
 volatile int Ticks = 0;
 static int MaxTicks = 100;
