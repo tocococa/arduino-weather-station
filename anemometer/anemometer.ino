@@ -6,7 +6,7 @@ static int WindSensorPin = 3;      //The pin location of the anemometer sensor
 volatile unsigned long Rotations = 0;  // cup rotation counter used in interrupt routine
 volatile unsigned long ContactBounceTime;  // Timer to avoid contact bounce in interrupt routine
 
-float WindSpeed;        // speed miles per hour
+float WindSpeed;        // speed kph
 
 void setup() {
 
