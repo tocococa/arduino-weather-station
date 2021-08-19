@@ -7,6 +7,8 @@
 // Shared
 
 volatile unsigned long ContactBounceTime;
+const int RefreshRate = 900000;
+unsigned long LastRefresh = 0;
 
 // WIND
 // wind speed (cup anemometer)
@@ -32,7 +34,7 @@ float Rainfall;
 // HUMIDITY+TEMP (DHT11)
 const int DhtPin = 4;
 #define DHTTYPE DHT11
-DHT dht(DHTPIN, DHTTYPE);
+DHT dht(DhtPin, DHTTYPE);
 float Temperature;
 float Humidity;
 
@@ -40,13 +42,13 @@ float Humidity;
 // PRESSURE (BMP180)
 SFE_BMP180 pressure;
 const float Altitude = 828.0;
-int Press;
+double Press;
 
 void setup(){
     Serial.begin(9600);
     Serial.println("REBOOT");
     Serial.println("FORMAT:");
-    Serial.println("Temp,Humidity,Press,WindSpd,WindDir,Rain") //data format
+    Serial.println("Temp,Humidity,Press,WindSpd,WindDir,Rain"); //data format
     Serial.flush();
     Serial.end();
     //rainfall
@@ -66,7 +68,19 @@ void setup(){
 }
 
 void loop(){
-
+    unsigned long TimeNow = millis();
+    if((TimeNow - LastRefresh) > RefreshRate){// poll all sensors every RefreshRate minutes
+        LastRefresh = TimeNow;
+        detachInterrupt(digitalPinToInterrupt(RainGaugePin));
+        Temperature = readTemp();
+        Humidity = readHumid();
+        Press = readPress();
+        WindSpeed = readCup();
+        WindDirection = readVane();
+        Rainfall = getRainfall();
+        Interrupt(digitalPinToInterrupt(RainGaugePin));
+    }
+    // rain uses an interrupt to trigger
 }
 
 void serialComm(){
@@ -88,17 +102,18 @@ float readCup(){
     cli();
     // convert to km/h using the formula V=P(2.4/T)
     // V = P(2.4/3) = P * 0.8
-    WindSpeed = Rotations * 0.8;
+    return Rotations * 0.8;
 }
 
-int readVane(){
+int readVane(){ // TODO
     int Readings;
     int Samples = 10;
-    for(int i = 0; i < Samples, i++){
+    for(int i = 0; i < Samples; i++){
         Readings = Readings + analogRead(VanePin);
         delay(100);
     }
-    int Average = Readings / Samples;z
+    Readings = Readings / Samples; // get average
+    return Readings; // Samples
 }
 
 double readPress(){
@@ -133,6 +148,12 @@ float readHumid(){
         return NAN;
     }
     return h;
+}
+
+float getRainfall(){
+    float Rainfall = Ticks * 0.2794;
+    Ticks = 0;
+    return Rainfall;
 }
 
 //rotation interrupt for cup anemometer -> only check during readWindspeed
