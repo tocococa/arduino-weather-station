@@ -79,6 +79,7 @@ void loop(){
         WindDirection = readVane();
         Rainfall = getRainfall();
         Interrupt(digitalPinToInterrupt(RainGaugePin));
+        serialComm();
     }
     // rain uses an interrupt to trigger
 }
@@ -90,7 +91,7 @@ void serialComm(){
     Serial.print(Press);Serial.print(",");
     Serial.print(WindSpeed);Serial.print(",");
     Serial.print(WindDirection);Serial.print(",");
-    Serial.print(Rainfall);
+    Serial.println(Rainfall);
     Serial.flush();
     Serial.end();
 }
