@@ -114,7 +114,11 @@ int readVane(){ // TODO
         delay(100);
     }
     Readings = Readings / Samples; // get average
-    return Readings; // Samples
+    return Readings; // return average resistance
+}
+
+int resistanceToDirection(int resistance){
+    
 }
 
 double readPress(){
@@ -129,6 +133,7 @@ double readPress(){
             status = pressure.getPressure(P,T);
             if(status != 0){
                 return pressure.sealevel(P, Altitude);
+                // returns relative pressure in milibar
             }
         }
     }
@@ -140,7 +145,7 @@ float readTemp(){
     if(isnan(t)){
         return NAN;
     }
-    return t;
+    return t; // temperature in Celcius
 }
 
 float readHumid(){
@@ -148,13 +153,13 @@ float readHumid(){
     if(isnan(h)){
         return NAN;
     }
-    return h;
+    return h; // relative humidity
 }
 
 float getRainfall(){
     float Rainfall = Ticks * 0.2794;
     Ticks = 0;
-    return Rainfall;
+    return Rainfall; // rainfall in mm since last sample
 }
 
 //rotation interrupt for cup anemometer -> only check during readWindspeed
