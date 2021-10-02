@@ -22,7 +22,6 @@ int VaneOutput;
 int WindDirection;
 const int CompassDirections = 16;
 const int VaneReading[CompassDirections] = {940, 890, 820, 785, 690, 630, 590, 455, 400, 285, 240, 180, 125, 90, 80};
-//^check these numbers^
 const float VaneDirection[CompassDirections] = {270.0, 305.0, 282.5, 0.0, 22.5, 337.5, 225.0, 247.5, 45.0, 22.5, 180.0, 202.5, 135.0, 157.5, 90.0, 112.5};
 
 // RAIN (tipping bucket gauge)
