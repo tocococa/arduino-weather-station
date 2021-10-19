@@ -106,7 +106,7 @@ void loop()
   Serial.print(ALTITUDE,0);
   Serial.print(" meters, ");
   Serial.print(ALTITUDE*3.28084,0);
-  Serial.println(" feet");
+  Serial.println(" feet\n");
   
   // If you want to measure altitude, and not pressure, you will instead need
   // to provide a known baseline pressure. This is shown at the end of the sketch.

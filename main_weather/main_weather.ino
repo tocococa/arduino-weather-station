@@ -68,7 +68,7 @@ void setup(){
 
 void loop(){
     unsigned long TimeNow = millis();
-    if((TimeNow - LastRefresh) > RefreshRate){// poll all sensors every RefreshRate minutes
+    if((TimeNow - LastRefresh) > RefreshRate){// poll all sensors every RefreshRate milis
         LastRefresh = TimeNow;
         detachInterrupt(digitalPinToInterrupt(RainGaugePin));
         Temperature = readTemp();
@@ -77,7 +77,7 @@ void loop(){
         WindSpeed = readCup();
         WindDirection = readVane();
         Rainfall = getRainfall();
-        Interrupt(digitalPinToInterrupt(RainGaugePin));
+        attachInterrupt(digitalPinToInterrupt(RainGaugePin), isr_tick, FALLING);
         serialComm();
     }
     // rain uses an interrupt to trigger

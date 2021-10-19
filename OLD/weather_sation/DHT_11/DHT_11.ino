@@ -32,8 +32,6 @@ DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
   Serial.begin(9600);
-  Serial.println(F("DHTxx test!"));
-
   dht.begin();
 }
 
@@ -60,15 +58,15 @@ void loop() {
   // Compute heat index in Celsius (isFahreheit = false)
   float hic = dht.computeHeatIndex(t, h, false);
 
-  Serial.print(F("Humidity: "));
+  Serial.print("Humidity: ");
   Serial.print(h);
-  Serial.print(F("%  Temperature: "));
+  Serial.print("%  Temperature: ");
   Serial.print(t);
-  Serial.print(F("°C "));
+  Serial.print("°C ");
   Serial.print(f);
-  Serial.print(F("°F  Heat index: "));
+  Serial.print("°F  Heat index: ");
   Serial.print(hic);
-  Serial.print(F("°C "));
+  Serial.print("°C ");
   Serial.print(hif);
-  Serial.println(F("°F"));
+  Serial.print("°F\n");
 }
