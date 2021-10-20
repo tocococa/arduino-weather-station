@@ -7,8 +7,9 @@
 // Shared
 
 volatile unsigned long ContactBounceTime;
-const int RefreshRate = 900000;
+const int RefreshRate = 2000;  // milis
 unsigned long LastRefresh = 0;
+unsigned long TimeNow;
 
 // WIND
 // wind speed (cup anemometer)
@@ -19,7 +20,7 @@ float WindSpeed;
 const int VanePin = A0;
 int WindVane = 0;
 int VaneOutput;
-int WindDirection;
+float WindDirection;
 const int CompassDirections = 16;
 const int VaneReading[CompassDirections] = {940, 890, 820, 785, 690, 630, 590, 455, 400, 285, 240, 180, 125, 90, 80};
 const float VaneDirection[CompassDirections] = {270.0, 305.0, 282.5, 0.0, 22.5, 337.5, 225.0, 247.5, 45.0, 22.5, 180.0, 202.5, 135.0, 157.5, 90.0, 112.5};
@@ -37,11 +38,13 @@ DHT dht(DhtPin, DHTTYPE);
 float Temperature;
 float Humidity;
 
-
 // PRESSURE (BMP180)
 SFE_BMP180 pressure;
 const float Altitude = 828.0;
 double Press;
+
+// LED
+int led = 13;
 
 void setup(){
     Serial.begin(9600);
@@ -50,12 +53,15 @@ void setup(){
     Serial.println("Temp,Humidity,Press,WindSpd,WindDir,Rain"); //data format
     Serial.flush();
     Serial.end();
+    //led 
+    pinMode(led, OUTPUT);
     //rainfall
     pinMode(RainGaugePin, INPUT);
     attachInterrupt(digitalPinToInterrupt(RainGaugePin), isr_tick, FALLING);
     //windspeed
     pinMode(WindSensorPin, INPUT);
     attachInterrupt(digitalPinToInterrupt(WindSensorPin), isr_rotation, FALLING);
+    sei(); // enable interrupts
     //pressure
     if(!pressure.begin()){
         Serial.print("BMP180 Fail");
@@ -67,18 +73,20 @@ void setup(){
 }
 
 void loop(){
-    unsigned long TimeNow = millis();
+    TimeNow = millis();
     if((TimeNow - LastRefresh) > RefreshRate){// poll all sensors every RefreshRate milis
+        digitalWrite(led, HIGH);
         LastRefresh = TimeNow;
-        detachInterrupt(digitalPinToInterrupt(RainGaugePin));
+        //detachInterrupt(digitalPinToInterrupt(RainGaugePin));
         Temperature = readTemp();
         Humidity = readHumid();
         Press = readPress();
         WindSpeed = readCup();
         WindDirection = readVane();
         Rainfall = getRainfall();
-        attachInterrupt(digitalPinToInterrupt(RainGaugePin), isr_tick, FALLING);
+        //attachInterrupt(digitalPinToInterrupt(RainGaugePin), isr_tick, FALLING);
         serialComm();
+        digitalWrite(led, LOW);
     }
     // rain uses an interrupt to trigger
 }
@@ -110,10 +118,17 @@ int readVane(){ // TODO
     int Samples = 10;
     for(int i = 0; i < Samples; i++){
         Readings = Readings + analogRead(VanePin);
-        delay(100);
+        delay(10);
     }
     Readings = Readings / Samples; // get average
-    return Readings; // return average resistance
+    float WindDir;
+    for (int i = 0; i < CompassDirections; i++){
+        if(Readings > VaneReading[i]){
+            WindDir = VaneDirection[i];
+            break;
+        }
+    }
+    return WindDir; // return wind direction
 }
 
 int resistanceToDirection(int resistance){
@@ -144,7 +159,7 @@ float readTemp(){
     if(isnan(t)){
         return NAN;
     }
-    return t; // temperature in Celcius
+    return t; // temperature in Celsius
 }
 
 float readHumid(){
