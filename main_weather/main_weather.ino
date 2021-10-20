@@ -22,8 +22,9 @@ int WindVane = 0;
 int VaneOutput;
 float WindDirection;
 const int CompassDirections = 16;
-const int VaneReading[CompassDirections] = {940, 890, 820, 785, 690, 630, 590, 455, 400, 285, 240, 180, 125, 90, 80};
+const int VaneReading[CompassDirections] = {944, 885, 825, 784, 700, 630, 598, 460, 404, 287, 246, 187, 131, 98, 90, 72};
 const float VaneDirection[CompassDirections] = {270.0, 305.0, 282.5, 0.0, 22.5, 337.5, 225.0, 247.5, 45.0, 22.5, 180.0, 202.5, 135.0, 157.5, 90.0, 112.5};
+const char*  CardinalDirection[CompassDirections] = {"W", "NW", "WNW", "N", "NNW", "SW", "WSW", "NE", "NNE", "S", "SSW", "SE", "SSE", "E", "ENE", "ESE"};
 
 // RAIN (tipping bucket gauge)
 const int RainGaugePin = 2;
