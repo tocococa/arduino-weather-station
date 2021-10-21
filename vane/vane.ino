@@ -45,7 +45,7 @@ void loop() {
 	else if(windVane > 400){
     Serial.print("heading = NNE");
   }  //NNE
-	else if(windVane > 282){
+	else if(windVane > 280){
     Serial.print("heading = S");
   }  //S
 	else if(windVane > 240){
