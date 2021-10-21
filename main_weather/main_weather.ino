@@ -20,11 +20,11 @@ float WindSpeed;
 const int VanePin = A0;
 int WindVane = 0;
 int VaneOutput;
-float WindDirection;
+char* WindDirection;
 const int CompassDirections = 16;
-const int VaneReading[CompassDirections] = {944, 885, 825, 784, 700, 630, 598, 460, 404, 287, 246, 187, 131, 98, 90, 72};
+const int VaneReading[CompassDirections] = {944, 885, 825, 784, 700, 630, 598, 460, 404, 287, 246, 187, 131, 89, 90, 72};
 const float VaneDirection[CompassDirections] = {270.0, 305.0, 282.5, 0.0, 22.5, 337.5, 225.0, 247.5, 45.0, 22.5, 180.0, 202.5, 135.0, 157.5, 90.0, 112.5};
-const char*  CardinalDirection[CompassDirections] = {"W", "NW", "WNW", "N", "NNW", "SW", "WSW", "NE", "NNE", "S", "SSW", "SE", "SSE", "E", "ENE", "ESE"};
+char*  CardinalDirection[CompassDirections] = {"W", "NW", "WNW", "N", "NNW", "SW", "WSW", "NE", "NNE", "S", "SSW", "SE", "SSE", "E", "ENE", "ESE"};
 
 // RAIN (tipping bucket gauge)
 const int RainGaugePin = 2;
@@ -117,8 +117,8 @@ float readCup(){
     return Rotations * 0.8;
 }
 
-int readVane(){
-    /* int Readings;
+char* readVane(){
+    /* int Readings;  -> FIX THIS
     int Samples = 10;
     for(int i = 0; i < Samples; i++){
         int Reading = analogRead(VanePin);
@@ -127,14 +127,11 @@ int readVane(){
     }
     Readings = (Readings / Samples); // get average */
     int Reading = analogRead(VanePin);
-    float WindDir;
     for (int i = 0; i < CompassDirections; i++){
         if(Reading > VaneReading[i]){
-            WindDir = VaneDirection[i];
-            break;
+            return CardinalDirection[i];
         }
     }
-    return WindDir; // return wind direction
 }
 
 double readPress(){

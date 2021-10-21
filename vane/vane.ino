@@ -18,7 +18,7 @@ void loop() {
   // change the analog out value:
   int temp;
 
-  if( windVane > 940){
+  if(windVane > 940){
     Serial.print("heading = W");
   } //W
 	else if(windVane > 880){
@@ -57,7 +57,7 @@ void loop() {
 	else if(windVane > 125){
     Serial.print("heading = SSE");
   }  //SSE
-	else if(windVane > 93){
+	else if(windVane > 89){
     Serial.print("heading = E");
   }  //E
 	else if(windVane > 85){
