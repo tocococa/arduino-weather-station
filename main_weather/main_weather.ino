@@ -7,7 +7,7 @@
 // Shared
 
 volatile unsigned long ContactBounceTime;
-const int RefreshRate = 2000;  // milis
+const int RefreshRate = 900000;  // milis
 unsigned long LastRefresh = 0.0;
 unsigned long TimeNow;
 
