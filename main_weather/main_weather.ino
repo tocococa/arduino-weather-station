@@ -7,7 +7,7 @@
 // Shared
 
 volatile unsigned long ContactBounceTime;
-const unsigned long RefreshRate = 90000;  // milis
+const unsigned long RefreshRate = 900000;  // milis
 unsigned long LastRefresh = 0.0;
 unsigned long TimeNow;
 
@@ -24,7 +24,7 @@ char* WindDirection;
 const int CompassDirections = 16;
 const int VaneReading[CompassDirections] = {940, 880, 820, 780, 695, 625, 593, 455, 400, 280, 240, 182, 125, 89, 85, 67};
 const float VaneDirection[CompassDirections] = {270.0, 305.0, 282.5, 0.0, 22.5, 337.5, 225.0, 247.5, 45.0, 22.5, 180.0, 202.5, 135.0, 157.5, 90.0, 112.5};
-char*  CardinalDirection[CompassDirections] = {"W", "NW", "WNW", "N", "NNW", "SW", "WSW", "NE", "NNE", "S", "SSW", "SE", "SSE", "E", "ENE", "ESE"};
+char*  CardinalDirection[CompassDirections] = {"E", "SE", "ESE", "S", "SSE", "NE", "ENE", "SW", "SSW", "N", "NNE", "NW", "NNW", "W", "WSW", "WNW"};
 
 // RAIN (tipping bucket gauge)
 const int RainGaugePin = 2;
